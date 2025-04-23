@@ -36,10 +36,8 @@ class FormattedTextWidget extends StatelessWidget {
     final entities = formattedText.entities;
     var entityIndex = 0;
 
-    // Split the text by {} and build spans
     final parts = text.split('{}');
     for (var i = 0; i < parts.length; i++) {
-      // Add the text before the entity
       if (parts[i].isNotEmpty) {
         spans.add(TextSpan(
           text: parts[i],
@@ -47,7 +45,6 @@ class FormattedTextWidget extends StatelessWidget {
         ));
       }
 
-      // Add the entity if we haven't reached the end of entities
       if (i < parts.length - 1 && entityIndex < entities.length) {
         final entity = entities[entityIndex];
         spans.add(TextSpan(

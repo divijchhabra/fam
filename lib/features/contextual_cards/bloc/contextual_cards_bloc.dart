@@ -1,8 +1,8 @@
 import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_event.dart';
 import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_state.dart';
-import 'package:fam_assignment/features/contextual_cards/repository/contextual_cards_repository_contract.dart';
 import 'package:fam_assignment/features/contextual_cards/data/enums/design_type.dart';
 import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
+import 'package:fam_assignment/features/contextual_cards/repository/contextual_cards_repository_contract.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,25 +15,11 @@ class ContextualCardsBloc
     required this.repository,
     required this.prefs,
   }) : super(ContextualCardsInitial()) {
-    on<LoadContextualCards>(_onLoadContextualCards);
     on<FetchContextualCards>(_onFetchContextualCards);
     on<DismissHC3Card>(_onDismissCard);
     on<SetReminderHC3Card>(_onSetReminderCard);
   }
 
-  Future<void> _onLoadContextualCards(
-    LoadContextualCards event,
-    Emitter<ContextualCardsState> emit,
-  ) async {
-    try {
-      emit(ContextualCardsLoading());
-      final cards = await repository.getContextualCards(event.slugType);
-      final filteredCards = await _filterDismissedCards(cards);
-      emit(ContextualCardsLoaded(cards: filteredCards));
-    } catch (e) {
-      emit(ContextualCardsError(message: e.toString()));
-    }
-  }
 
   Future<void> _onFetchContextualCards(
     FetchContextualCards event,
