@@ -1,5 +1,5 @@
 import 'package:fam_assignment/features/contextual_cards/data/enums/slug_type.dart';
-import 'package:fam_assignment/features/contextual_cards/presentation/providers/layout_provider.dart';
+import 'package:fam_assignment/features/contextual_cards/presentation/contextual_cards_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {

@@ -120,11 +120,23 @@ class FormattedTextNetworkModel extends Equatable {
   final String text;
   final String align;
   final List<EntityNetworkModel> entities;
+  @JsonKey(name: 'color')
+  final String? color;
+  @JsonKey(name: 'font_style')
+  final String? fontStyle;
+  @JsonKey(name: 'font_family')
+  final String? fontFamily;
+  @JsonKey(name: 'font_size')
+  final int? fontSize;
 
   const FormattedTextNetworkModel({
     required this.text,
     required this.align,
     required this.entities,
+    this.color,
+    this.fontStyle,
+    this.fontFamily,
+    this.fontSize,
   });
 
   factory FormattedTextNetworkModel.fromJson(Map<String, dynamic> json) =>
@@ -133,7 +145,7 @@ class FormattedTextNetworkModel extends Equatable {
   Map<String, dynamic> toJson() => _$FormattedTextNetworkModelToJson(this);
 
   @override
-  List<Object?> get props => [text, align, entities];
+  List<Object?> get props => [text, align, entities, color, fontStyle, fontFamily, fontSize];
 }
 
 @JsonSerializable()

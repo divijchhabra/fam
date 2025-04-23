@@ -21,21 +21,43 @@ class HC1Card extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: SizedBox(
         height: (cardGroup.height?.toDouble() ?? 0) * 1.3,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: cardGroup.cards.length,
-          itemBuilder: (context, index) {
-            final card = cardGroup.cards[index];
-            return _buildHc1Card(context, card);
-          },
-        ),
+        child: cardGroup.isScrollable == true
+            ? ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: cardGroup.cards.length,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                itemBuilder: (context, index) {
+                  final card = cardGroup.cards[index];
+                  return _buildHc1Card(context, card);
+                },
+              )
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: cardGroup.cards
+                      .map((card) => _buildHc1Card(context, card))
+                      .toList(),
+                ),
+              ),
       ),
     );
   }
 
   Widget _buildHc1Card(BuildContext context, CardModel card) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final cardWidth = cardGroup.isFullWidth == true
+        ? screenWidth - 24
+        : cardGroup.isScrollable == true
+            ? screenWidth * 0.8
+            : (screenWidth - 80 - (8 * (cardGroup.cards.length - 1))) /
+                cardGroup.cards.length; // Fit all cards with equal spacing
+
+    return Container(
+      width: cardWidth,
+      margin: EdgeInsets.only(
+        right: cardGroup.isScrollable == true ? 8.0 : 0.0,
+      ),
       child: GestureDetector(
         onTap: () async {
           if (card.url != null) {
@@ -47,11 +69,10 @@ class HC1Card extends StatelessWidget {
         },
         child: Container(
           height: 64,
-          width: cardGroup.isScrollable == true
-              ? MediaQuery.sizeOf(context).width - 20
-              : (MediaQuery.sizeOf(context).width - 20) / 2,
           decoration: BoxDecoration(
-            color: card.bgColor != null ? Color(int.parse(card.bgColor!.replaceAll('#', '0xFF'))) : Colors.white,
+            color: card.bgColor != null
+                ? Color(int.parse(card.bgColor!.replaceAll('#', '0xFF')))
+                : Colors.white,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
@@ -66,7 +87,8 @@ class HC1Card extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.network(
-                    card.icon?.imageUrl ?? "https://hok.famapp.co.in/hok-assets/feedMedia/ext/5435b4ee-a962-4531-95d5-889e4038eece-1734193661283.webp",
+                    card.icon?.imageUrl ??
+                        "https://hok.famapp.co.in/hok-assets/feedMedia/ext/5435b4ee-a962-4531-95d5-889e4038eece-1734193661283.webp",
                     fit: BoxFit.cover,
                     width: 48,
                     height: 48,
@@ -81,14 +103,16 @@ class HC1Card extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (card.formattedTitle != null && card.formattedTitle!.text.trim().isNotEmpty)
+                      if (card.formattedTitle != null &&
+                          card.formattedTitle!.text.trim().isNotEmpty)
                         SizedBox(
                           width: double.infinity,
                           child: FormattedTextWidget(
                             formattedText: card.formattedTitle!,
                           ),
                         ),
-                      if (card.formattedDescription != null && card.formattedDescription!.text.trim().isNotEmpty)
+                      if (card.formattedDescription != null &&
+                          card.formattedDescription!.text.trim().isNotEmpty)
                         SizedBox(
                           width: double.infinity,
                           child: FormattedTextWidget(

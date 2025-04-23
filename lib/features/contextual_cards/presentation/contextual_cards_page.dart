@@ -1,13 +1,25 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fam_assignment/core/di/fam_di.dart';
 import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_bloc.dart';
 import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_event.dart';
 import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_state.dart';
-import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
 import 'package:fam_assignment/features/contextual_cards/data/enums/slug_type.dart';
-import 'package:fam_assignment/features/contextual_cards/presentation/providers/layout_provider.dart';
-import 'widgets/card_groups/card_group_widget.dart';
+import 'package:fam_assignment/features/contextual_cards/presentation/widgets/card_groups/card_group_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class ContextualCardsLayoutProvider extends StatelessWidget {
+  final SlugType slugType;
+
+  const ContextualCardsLayoutProvider({
+    super.key,
+    required this.slugType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ContextualCardsPage(slugType: slugType);
+  }
+}
 
 class ContextualCardsPage extends StatelessWidget {
   final SlugType slugType;

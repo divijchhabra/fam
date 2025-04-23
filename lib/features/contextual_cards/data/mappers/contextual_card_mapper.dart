@@ -55,6 +55,10 @@ extension FormattedTextMapper on FormattedTextNetworkModel {
       text: text,
       align: align,
       entities: entities.map((e) => e.toPresentation()).toList(),
+      color: color,
+      fontStyle: fontStyle,
+      fontFamily: fontFamily,
+      fontSize: fontSize,
     );
   }
 }

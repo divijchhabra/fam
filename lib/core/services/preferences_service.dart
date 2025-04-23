@@ -8,7 +8,6 @@ class PreferencesService {
     return await SharedPreferences.getInstance();
   }
 
-  // Reminder related functions
   Future<bool> setReminderStatus(String cardId, bool value) async {
     final preferences = await _getPreferences();
     return preferences.setBool('$_reminderPrefix$cardId', value);

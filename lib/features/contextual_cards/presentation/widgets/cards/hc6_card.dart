@@ -17,31 +17,23 @@ class HC6Card extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: SizedBox(
-        height: cardGroup.height?.toDouble() ?? 32,
-        child: cardGroup.isScrollable == true
-            ? ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: cardGroup.cards.length,
-                itemBuilder: (context, index) {
-                  final card = cardGroup.cards[index];
-                  return _buildHc6Card(context, card);
-                },
-              )
-            : Row(
-                children: cardGroup.cards.map((card) => _buildHc6Card(context, card)).toList(),
-              ),
+    return SizedBox(
+      height: cardGroup.height?.toDouble() ?? 0,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 4, bottom: 12.0),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: cardGroup.cards.length,
+          itemBuilder: (context, index) {
+            final card = cardGroup.cards[index];
+            return _buildHc6Card(context, card);
+          },
+        ),
       ),
     );
   }
 
   Widget _buildHc6Card(BuildContext context, CardModel card) {
-    final cardWidth = cardGroup.isFullWidth == true
-        ? MediaQuery.sizeOf(context).width
-        : (MediaQuery.sizeOf(context).width - 32) / (cardGroup.cards.length);
-
     return GestureDetector(
       onTap: () async {
         if (card.url != null) {
@@ -52,16 +44,21 @@ class HC6Card extends StatelessWidget {
         }
       },
       child: Container(
-        width: cardWidth,
+        width:
+            (MediaQuery.sizeOf(context).width - 32) / (cardGroup.cards.length),
+        height: cardGroup.height?.toDouble() ?? 0,
         margin: const EdgeInsets.symmetric(horizontal: 4.0),
         decoration: BoxDecoration(
-          color: card.bgColor != null ? Color(int.parse(card.bgColor!.replaceAll('#', '0xFF'))) : Colors.white,
+          color: card.bgColor != null
+              ? Color(int.parse(card.bgColor!.replaceAll('#', '0xFF')))
+              : Colors.white,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
@@ -75,7 +72,8 @@ class HC6Card extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: card.formattedTitle != null && card.formattedTitle!.text.trim().isNotEmpty
+                child: card.formattedTitle != null &&
+                        card.formattedTitle!.text.trim().isNotEmpty
                     ? FormattedTextWidget(
                         formattedText: card.formattedTitle!,
                       )
@@ -91,4 +89,4 @@ class HC6Card extends StatelessWidget {
       ),
     );
   }
-} 
+}

@@ -77,15 +77,23 @@ class FormattedTextModel extends Equatable {
   final String text;
   final String align;
   final List<EntityModel> entities;
+  final String? color;
+  final String? fontStyle;
+  final String? fontFamily;
+  final int? fontSize;
 
   const FormattedTextModel({
     required this.text,
     required this.align,
     required this.entities,
+    this.color,
+    this.fontStyle,
+    this.fontFamily,
+    this.fontSize,
   });
 
   @override
-  List<Object?> get props => [text, align, entities];
+  List<Object?> get props => [text, align, entities, color, fontStyle, fontFamily, fontSize];
 }
 
 class EntityModel extends Equatable {

@@ -28,6 +28,10 @@ class _HC3CardState extends State<HC3Card> {
   void initState() {
     super.initState();
     _loadCardStatus();
+    if (widget.cardGroup.cards.isNotEmpty) {
+      final cardId = widget.cardGroup.cards.first.id.toString();
+      _preferencesService.clearReminderStatus(cardId);
+    }
   }
 
   Future<void> _loadCardStatus() async {
@@ -47,7 +51,7 @@ class _HC3CardState extends State<HC3Card> {
   Future<void> _toggleReminder() async {
     if (widget.cardGroup.cards.isNotEmpty) {
       final cardId = widget.cardGroup.cards.first.id.toString();
-      final newStatus = !_isReminded;
+      final newStatus = true; // Set to true to hide the card
       final success = await _preferencesService.setReminderStatus(
         cardId,
         newStatus,
@@ -81,14 +85,11 @@ class _HC3CardState extends State<HC3Card> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.cardGroup.cards.isEmpty || _isDismissed) {
+    if (widget.cardGroup.cards.isEmpty || _isDismissed || _isReminded) {
       return const SizedBox.shrink();
     }
 
     final card = widget.cardGroup.cards.first;
-    final bgColor = card.bgColor != null 
-        ? Color(int.parse(card.bgColor!.replaceAll('#', '0xFF'))) 
-        : Colors.white;
     final double space = (MediaQuery.sizeOf(context).width - 80) / 2;
 
     return SizedBox(
@@ -114,51 +115,52 @@ class _HC3CardState extends State<HC3Card> {
                 height: widget.cardGroup.height?.toDouble(),
                 width: MediaQuery.sizeOf(context).width - 16,
                 decoration: BoxDecoration(
-                  color: bgColor,
+                  color: card.bgColor != null 
+                      ? Color(int.parse(card.bgColor!.replaceAll('#', '0xFF'))) 
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(12),
+                  image: card.bgImage?.imageUrl != null
+                      ? DecorationImage(
+                          image: NetworkImage(card.bgImage!.imageUrl!),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (card.bgImage != null) ...[
-                      ClipRRect(
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                        child: AspectRatio(
-                          aspectRatio: card.bgImage?.aspectRatio ?? 0.9142857,
-                          child: Image.network(
-                            card.bgImage?.imageUrl ?? "",
-                            fit: BoxFit.cover,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (card.formattedTitle != null)
+                          FormattedTextWidget(
+                            formattedText: card.formattedTitle!,
                           ),
-                        ),
-                      ),
-                    ],
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (card.formattedTitle != null) ...[
-                            FormattedTextWidget(formattedText: card.formattedTitle!),
-                            const SizedBox(height: 8),
-                          ],
-                          if (card.formattedDescription != null) ...[
-                            FormattedTextWidget(formattedText: card.formattedDescription!),
-                            const SizedBox(height: 16),
-                          ],
-                          if (card.cta != null && card.cta!.isNotEmpty)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: card.cta!
-                                  .map((cta) => Padding(
-                                        padding: const EdgeInsets.only(right: 8),
-                                        child: CTAButton(cta: cta),
-                                      ))
-                                  .toList(),
-                            ),
+                        if (card.formattedDescription != null) ...[
+                          const SizedBox(height: 8),
+                          FormattedTextWidget(
+                            formattedText: card.formattedDescription!,
+                          ),
                         ],
-                      ),
+                        if (card.cta != null && card.cta!.isNotEmpty) ...[
+                          SizedBox(height: widget.cardGroup.height! * 0.2),
+                          Row(
+                            children: card.cta!
+                                .map((cta) => Padding(
+                                      padding: const EdgeInsets.only(right: 16),
+                                      child: CTAButton(cta: cta),
+                                    ))
+                                .toList(),
+                          ),
+                          SizedBox(height: widget.cardGroup.height! * 0.1),
+                        ],
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -212,7 +214,7 @@ class _HC3CardState extends State<HC3Card> {
                   icon,
                   width: 16,
                   height: 16,
-                  color: const Color(0xFFFFB800), // Yellow/gold color
+                  color: const Color(0xFFFFB800),
                 ),
                 const SizedBox(width: 8),
                 Text(
@@ -230,4 +232,4 @@ class _HC3CardState extends State<HC3Card> {
       ),
     );
   }
-} 
+}

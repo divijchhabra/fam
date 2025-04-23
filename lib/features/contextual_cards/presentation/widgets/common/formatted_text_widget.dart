@@ -13,10 +13,21 @@ class FormattedTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final baseTextStyle = TextStyle(
+      color: formattedText.color != null 
+          ? Color(int.parse(formattedText.color!.replaceAll('#', '0xFF'))) 
+          : Colors.black,
+      fontSize: formattedText.fontSize?.toDouble() ?? 16,
+      fontStyle: _getFontStyle(formattedText.fontStyle),
+      decoration: formattedText.fontStyle == 'underline' ? TextDecoration.underline : null,
+      fontFamily: formattedText.fontFamily,
+    );
+
     if (formattedText.entities.isEmpty) {
       return Text(
         formattedText.text,
         textAlign: _getTextAlign(formattedText.align),
+        style: baseTextStyle,
       );
     }
 
@@ -32,10 +43,7 @@ class FormattedTextWidget extends StatelessWidget {
       if (parts[i].isNotEmpty) {
         spans.add(TextSpan(
           text: parts[i],
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 16,
-          ),
+          style: baseTextStyle,
         ));
       }
 
@@ -45,11 +53,13 @@ class FormattedTextWidget extends StatelessWidget {
         spans.add(TextSpan(
           text: entity.text,
           style: TextStyle(
-            color: entity.color != null ? Color(int.parse(entity.color!.replaceAll('#', '0xFF'))) : Colors.black,
-            fontSize: entity.fontSize?.toDouble() ?? 16,
-            fontStyle: _getFontStyle(entity.fontStyle),
-            decoration: entity.fontStyle == 'underline' ? TextDecoration.underline : null,
-            fontFamily: entity.fontFamily,
+            color: entity.color != null 
+                ? Color(int.parse(entity.color!.replaceAll('#', '0xFF'))) 
+                : baseTextStyle.color,
+            fontSize: entity.fontSize?.toDouble() ?? baseTextStyle.fontSize,
+            fontStyle: _getFontStyle(entity.fontStyle) ?? baseTextStyle.fontStyle,
+            decoration: entity.fontStyle == 'underline' ? TextDecoration.underline : baseTextStyle.decoration,
+            fontFamily: entity.fontFamily ?? baseTextStyle.fontFamily,
           ),
           recognizer: entity.url != null
               ? (TapGestureRecognizer()
@@ -72,10 +82,7 @@ class FormattedTextWidget extends StatelessWidget {
     return RichText(
       textAlign: _getTextAlign(formattedText.align),
       text: TextSpan(
-        style: const TextStyle(
-          color: Colors.black,
-          fontSize: 16,
-        ),
+        style: baseTextStyle,
         children: spans,
       ),
     );
@@ -94,7 +101,7 @@ class FormattedTextWidget extends StatelessWidget {
     }
   }
 
-  FontStyle _getFontStyle(String? style) {
+  FontStyle? _getFontStyle(String? style) {
     switch (style?.toLowerCase()) {
       case 'italic':
         return FontStyle.italic;
