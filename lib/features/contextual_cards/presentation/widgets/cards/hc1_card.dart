@@ -1,7 +1,7 @@
+import 'package:fam_assignment/core/utils/url_launcher.dart';
 import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
 import 'package:fam_assignment/features/contextual_cards/presentation/widgets/common/formatted_text_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HC1Card extends StatelessWidget {
   final CardGroupModel cardGroup;
@@ -20,7 +20,7 @@ class HC1Card extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: SizedBox(
-        height: (cardGroup.height?.toDouble() ?? 0) * 1.3,
+        height: (cardGroup.height.toDouble()) * 1.3,
         child: cardGroup.isScrollable == true
             ? ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -60,19 +60,12 @@ class HC1Card extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () async {
-          if (card.url != null) {
-            final Uri uri = Uri.parse(card.url!);
-            if (await canLaunchUrl(uri)) {
-              await launchUrl(uri);
-            }
-          }
+          await UrlLauncher.launch(card.url);
         },
         child: Container(
           height: 64,
           decoration: BoxDecoration(
-            color: card.bgColor != null
-                ? Color(int.parse(card.bgColor!.replaceAll('#', '0xFF')))
-                : Colors.white,
+            color: Color(int.parse(card.bgColor.replaceAll('#', '0xFF'))),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
@@ -87,8 +80,7 @@ class HC1Card extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.network(
-                    card.icon?.imageUrl ??
-                        "https://hok.famapp.co.in/hok-assets/feedMedia/ext/5435b4ee-a962-4531-95d5-889e4038eece-1734193661283.webp",
+                    card.icon.imageUrl,
                     fit: BoxFit.cover,
                     width: 48,
                     height: 48,
@@ -103,20 +95,18 @@ class HC1Card extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (card.formattedTitle != null &&
-                          card.formattedTitle!.text.trim().isNotEmpty)
+                      if (card.formattedTitle.text.trim().isNotEmpty)
                         SizedBox(
                           width: double.infinity,
                           child: FormattedTextWidget(
-                            formattedText: card.formattedTitle!,
+                            formattedText: card.formattedTitle,
                           ),
                         ),
-                      if (card.formattedDescription != null &&
-                          card.formattedDescription!.text.trim().isNotEmpty)
+                      if (card.formattedDescription.text.trim().isNotEmpty)
                         SizedBox(
                           width: double.infinity,
                           child: FormattedTextWidget(
-                            formattedText: card.formattedDescription!,
+                            formattedText: card.formattedDescription,
                           ),
                         ),
                     ],

@@ -1,10 +1,10 @@
 import 'package:fam_assignment/core/services/preferences_service.dart';
 import 'package:fam_assignment/core/utils/assets.dart';
+import 'package:fam_assignment/core/utils/url_launcher.dart';
 import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
 import 'package:fam_assignment/features/contextual_cards/presentation/widgets/common/cta_button.dart';
 import 'package:fam_assignment/features/contextual_cards/presentation/widgets/common/formatted_text_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HC3Card extends StatefulWidget {
   final CardGroupModel cardGroup;
@@ -28,58 +28,48 @@ class _HC3CardState extends State<HC3Card> {
   void initState() {
     super.initState();
     _loadCardStatus();
-    if (widget.cardGroup.cards.isNotEmpty) {
-      final cardId = widget.cardGroup.cards.first.id.toString();
-      _preferencesService.clearReminderStatus(cardId);
-    }
   }
 
   Future<void> _loadCardStatus() async {
-    if (widget.cardGroup.cards.isNotEmpty) {
-      final cardId = widget.cardGroup.cards.first.id.toString();
-      final reminderStatus = await _preferencesService.getReminderStatus(cardId);
-      final dismissStatus = await _preferencesService.getDismissStatus(cardId);
-      if (mounted) {
-        setState(() {
-          _isReminded = reminderStatus ?? false;
-          _isDismissed = dismissStatus ?? false;
-        });
-      }
+    final cardId = widget.cardGroup.cards.first.id.toString();
+    final reminderStatus = await _preferencesService.getReminderStatus(cardId);
+    final dismissStatus = await _preferencesService.getDismissStatus(cardId);
+    if (mounted) {
+      setState(() {
+        _isReminded = reminderStatus ?? false;
+        _isDismissed = dismissStatus ?? false;
+      });
     }
   }
 
   Future<void> _toggleReminder() async {
-    if (widget.cardGroup.cards.isNotEmpty) {
-      final cardId = widget.cardGroup.cards.first.id.toString();
-      final newStatus = true; // Set to true to hide the card
-      final success = await _preferencesService.setReminderStatus(
-        cardId,
-        newStatus,
-      );
-      
-      if (success && mounted) {
-        setState(() {
-          _isReminded = newStatus;
-          isSelected = false;
-        });
-      }
+    final cardId = widget.cardGroup.cards.first.id.toString();
+    const newStatus = true;
+    final success = await _preferencesService.setReminderStatus(
+      cardId,
+      newStatus,
+    );
+
+    if (success && mounted) {
+      setState(() {
+        _isReminded = newStatus;
+        isSelected = false;
+      });
     }
   }
 
   Future<void> _handleDismiss() async {
-    if (widget.cardGroup.cards.isNotEmpty) {
-      final cardId = widget.cardGroup.cards.first.id.toString();
-      final success = await _preferencesService.setDismissStatus(
-        cardId,
-        true,
-      );
-      
-      if (success && mounted) {
-        setState(() {
-          _isDismissed = true;
-          isSelected = false;
-        });
-      }
+    final cardId = widget.cardGroup.cards.first.id.toString();
+    final success = await _preferencesService.setDismissStatus(
+      cardId,
+      true,
+    );
+
+    if (success && mounted) {
+      setState(() {
+        _isDismissed = true;
+        isSelected = false;
+      });
     }
   }
 
@@ -93,7 +83,7 @@ class _HC3CardState extends State<HC3Card> {
     final double space = (MediaQuery.sizeOf(context).width - 80) / 2;
 
     return SizedBox(
-      height: widget.cardGroup.height?.toDouble(),
+      height: widget.cardGroup.height.toDouble(),
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -104,27 +94,20 @@ class _HC3CardState extends State<HC3Card> {
             child: GestureDetector(
               onLongPress: () => setState(() => isSelected = !isSelected),
               onTap: () async {
-                if (!isSelected && card.url != null) {
-                  final Uri uri = Uri.parse(card.url!);
-                  if (await canLaunchUrl(uri)) {
-                    await launchUrl(uri);
-                  }
+                if (!isSelected) {
+                  await UrlLauncher.launch(card.url);
                 }
               },
               child: Container(
-                height: widget.cardGroup.height?.toDouble(),
+                height: widget.cardGroup.height.toDouble(),
                 width: MediaQuery.sizeOf(context).width - 16,
                 decoration: BoxDecoration(
-                  color: card.bgColor != null 
-                      ? Color(int.parse(card.bgColor!.replaceAll('#', '0xFF'))) 
-                      : Colors.white,
+                  color: Color(int.parse(card.bgColor.replaceAll('#', '0xFF'))),
                   borderRadius: BorderRadius.circular(12),
-                  image: card.bgImage?.imageUrl != null
-                      ? DecorationImage(
-                          image: NetworkImage(card.bgImage!.imageUrl!),
-                          fit: BoxFit.cover,
-                        )
-                      : null,
+                  image: DecorationImage(
+                    image: NetworkImage(card.bgImage.imageUrl),
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 child: Container(
                   decoration: BoxDecoration(
@@ -136,28 +119,23 @@ class _HC3CardState extends State<HC3Card> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        if (card.formattedTitle != null)
-                          FormattedTextWidget(
-                            formattedText: card.formattedTitle!,
-                          ),
-                        if (card.formattedDescription != null) ...[
-                          const SizedBox(height: 8),
-                          FormattedTextWidget(
-                            formattedText: card.formattedDescription!,
-                          ),
-                        ],
-                        if (card.cta != null && card.cta!.isNotEmpty) ...[
-                          SizedBox(height: widget.cardGroup.height! * 0.2),
-                          Row(
-                            children: card.cta!
-                                .map((cta) => Padding(
-                                      padding: const EdgeInsets.only(right: 16),
-                                      child: CTAButton(cta: cta),
-                                    ))
-                                .toList(),
-                          ),
-                          SizedBox(height: widget.cardGroup.height! * 0.1),
-                        ],
+                        FormattedTextWidget(
+                          formattedText: card.formattedTitle,
+                        ),
+                        const SizedBox(height: 8),
+                        FormattedTextWidget(
+                          formattedText: card.formattedDescription,
+                        ),
+                        SizedBox(height: widget.cardGroup.height * 0.2),
+                        Row(
+                          children: card.cta
+                              .map((cta) => Padding(
+                                    padding: const EdgeInsets.only(right: 16),
+                                    child: CTAButton(cta: cta),
+                                  ))
+                              .toList(),
+                        ),
+                        SizedBox(height: widget.cardGroup.height * 0.1),
                       ],
                     ),
                   ),

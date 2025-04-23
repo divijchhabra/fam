@@ -1,6 +1,7 @@
+import 'package:fam_assignment/core/utils/url_launcher.dart';
 import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
+import 'package:fam_assignment/features/contextual_cards/presentation/widgets/common/formatted_text_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HC5Card extends StatelessWidget {
   final CardGroupModel cardGroup;
@@ -32,17 +33,12 @@ class HC5Card extends StatelessWidget {
   Widget _buildHc5Card(BuildContext context, CardModel card) {
     return GestureDetector(
       onTap: () async {
-        if (card.url != null) {
-          final Uri uri = Uri.parse(card.url!);
-          if (await canLaunchUrl(uri)) {
-            await launchUrl(uri);
-          }
-        }
+        await UrlLauncher.launch(card.url);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
         child: Image.network(
-          card.bgImage?.imageUrl ?? "",
+          card.bgImage.imageUrl,
           fit: BoxFit.cover,
           width: MediaQuery.sizeOf(context).width - 16,
         ),

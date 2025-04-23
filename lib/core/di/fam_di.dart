@@ -1,9 +1,9 @@
-import 'package:get_it/get_it.dart';
-import 'package:http/http.dart' as http;
 import 'package:fam_assignment/core/network/base_request.dart';
 import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_bloc.dart';
 import 'package:fam_assignment/features/contextual_cards/repository/contextual_cards_repository_contract.dart';
 import 'package:fam_assignment/features/contextual_cards/repository/contextual_cards_repository_impl.dart';
+import 'package:get_it/get_it.dart';
+import 'package:http/http.dart' as http;
 
 class FamDI {
   static final FamDI instance = FamDI._internal();

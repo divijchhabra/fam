@@ -1,6 +1,6 @@
+import 'package:fam_assignment/core/utils/url_launcher.dart';
 import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
-import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:fam_assignment/features/contextual_cards/presentation/widgets/common/formatted_text_widget.dart';
 
 class HC9Card extends StatelessWidget {
   final CardGroupModel cardGroup;
@@ -21,7 +21,7 @@ class HC9Card extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 4.0),
         child: SizedBox(
-          height: (cardGroup.height?.toDouble() ?? 0) * 1.3,
+          height: (cardGroup.height.toDouble()) * 1.3,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: cardGroup.cards.length,
@@ -40,39 +40,33 @@ class HC9Card extends StatelessWidget {
       padding: const EdgeInsets.only(right: 12.0),
       child: GestureDetector(
         onTap: () async {
-          if (card.url != null) {
-            final Uri uri = Uri.parse(card.url!);
-            if (await canLaunchUrl(uri)) {
-              await launchUrl(uri);
-            }
-          }
+          await UrlLauncher.launch(card.url);
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: AspectRatio(
-            aspectRatio: card.bgImage?.aspectRatio ?? 1.5,
+            aspectRatio: card.bgImage.aspectRatio,
             child: Container(
               decoration: BoxDecoration(
-                gradient: card.bgGradient?.colors?.isNotEmpty == true
+                gradient: card.bgGradient.colors.isNotEmpty == true
                     ? LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: card.bgGradient!.colors!
-                            .map((color) => Color(int.parse(color.replaceAll('#', '0xFF'))))
+                        colors: card.bgGradient.colors
+                            .map((color) =>
+                                Color(int.parse(color.replaceAll('#', '0xFF'))))
                             .toList(),
                       )
                     : null,
               ),
-              child: card.bgImage?.imageUrl != null
-                  ? Image.network(
-                      card.bgImage!.imageUrl!,
-                      fit: BoxFit.cover,
-                    )
-                  : null,
+              child: Image.network(
+                card.bgImage.imageUrl,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
       ),
     );
   }
-} 
+}

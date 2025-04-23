@@ -1,7 +1,7 @@
+import 'package:fam_assignment/core/utils/url_launcher.dart';
+import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
 
 class FormattedTextWidget extends StatelessWidget {
   final FormattedTextModel formattedText;
@@ -14,12 +14,12 @@ class FormattedTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final baseTextStyle = TextStyle(
-      color: formattedText.color != null 
-          ? Color(int.parse(formattedText.color!.replaceAll('#', '0xFF'))) 
-          : Colors.black,
-      fontSize: formattedText.fontSize?.toDouble() ?? 16,
+      color: Color(int.parse(formattedText.color.replaceAll('#', '0xFF'))),
+      fontSize: formattedText.fontSize.toDouble(),
       fontStyle: _getFontStyle(formattedText.fontStyle),
-      decoration: formattedText.fontStyle == 'underline' ? TextDecoration.underline : null,
+      decoration: formattedText.fontStyle == 'underline'
+          ? TextDecoration.underline
+          : null,
       fontFamily: formattedText.fontFamily,
     );
 
@@ -53,27 +53,19 @@ class FormattedTextWidget extends StatelessWidget {
         spans.add(TextSpan(
           text: entity.text,
           style: TextStyle(
-            color: entity.color != null 
-                ? Color(int.parse(entity.color!.replaceAll('#', '0xFF'))) 
-                : baseTextStyle.color,
-            fontSize: entity.fontSize?.toDouble() ?? baseTextStyle.fontSize,
-            fontStyle: _getFontStyle(entity.fontStyle) ?? baseTextStyle.fontStyle,
-            decoration: entity.fontStyle == 'underline' ? TextDecoration.underline : baseTextStyle.decoration,
-            fontFamily: entity.fontFamily ?? baseTextStyle.fontFamily,
+            color: Color(int.parse(entity.color.replaceAll('#', '0xFF'))),
+            fontSize: entity.fontSize.toDouble(),
+            fontStyle:
+                _getFontStyle(entity.fontStyle) ?? baseTextStyle.fontStyle,
+            decoration: entity.fontStyle == 'underline'
+                ? TextDecoration.underline
+                : baseTextStyle.decoration,
+            fontFamily: entity.fontFamily,
           ),
-          recognizer: entity.url != null
-              ? (TapGestureRecognizer()
-                ..onTap = () async {
-                  try {
-                    final Uri uri = Uri.parse(entity.url!);
-                    if (await canLaunchUrl(uri)) {
-                      await launchUrl(uri);
-                    }
-                  } catch (e) {
-                    // Handle invalid URL
-                  }
-                })
-              : null,
+          recognizer: (TapGestureRecognizer()
+            ..onTap = () async {
+              await UrlLauncher.launch(entity.url);
+            }),
         ));
         entityIndex++;
       }

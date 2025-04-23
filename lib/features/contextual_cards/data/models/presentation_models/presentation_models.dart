@@ -8,9 +8,9 @@ class CardGroupModel extends Equatable {
   final int cardType;
   final List<CardModel> cards;
   final bool isScrollable;
-  final int? height;
+  final int height;
   final bool isFullWidth;
-  final String? slug;
+  final String slug;
   final int level;
 
   const CardGroupModel({
@@ -20,9 +20,9 @@ class CardGroupModel extends Equatable {
     required this.cardType,
     required this.cards,
     required this.isScrollable,
-    this.height,
+    required this.height,
     required this.isFullWidth,
-    this.slug,
+    required this.slug,
     required this.level,
   });
 
@@ -34,18 +34,18 @@ class CardModel extends Equatable {
   final int id;
   final String name;
   final String slug;
-  final String? title;
-  final FormattedTextModel? formattedTitle;
-  final String? description;
-  final FormattedTextModel? formattedDescription;
-  final CardImageModel? icon;
-  final CardImageModel? bgImage;
-  final String? bgColor;
-  final BgGradientModel? bgGradient;
-  final String? url;
-  final int? iconSize;
+  final String title;
+  final FormattedTextModel formattedTitle;
+  final String description;
+  final FormattedTextModel formattedDescription;
+  final CardImageModel icon;
+  final CardImageModel bgImage;
+  final String bgColor;
+  final BgGradientModel bgGradient;
+  final String url;
+  final int iconSize;
   final bool isDisabled;
-  final List<CTAModel>? cta;
+  final List<CTAModel> cta;
   final bool isShareable;
   final bool isInternal;
 
@@ -53,18 +53,18 @@ class CardModel extends Equatable {
     required this.id,
     required this.name,
     required this.slug,
-    this.title,
-    this.formattedTitle,
-    this.description,
-    this.formattedDescription,
-    this.icon,
-    this.bgImage,
-    this.bgColor,
-    this.bgGradient,
-    this.url,
-    this.iconSize,
+    required this.title,
+    required this.formattedTitle,
+    required this.description,
+    required this.formattedDescription,
+    required this.icon,
+    required this.bgImage,
+    required this.bgColor,
+    required this.bgGradient,
+    required this.url,
+    required this.iconSize,
     required this.isDisabled,
-    this.cta,
+    required this.cta,
     required this.isShareable,
     required this.isInternal,
   });
@@ -77,19 +77,19 @@ class FormattedTextModel extends Equatable {
   final String text;
   final String align;
   final List<EntityModel> entities;
-  final String? color;
-  final String? fontStyle;
-  final String? fontFamily;
-  final int? fontSize;
+  final String color;
+  final String fontStyle;
+  final String fontFamily;
+  final int fontSize;
 
   const FormattedTextModel({
     required this.text,
     required this.align,
     required this.entities,
-    this.color,
-    this.fontStyle,
-    this.fontFamily,
-    this.fontSize,
+    required this.color,
+    required this.fontStyle,
+    required this.fontFamily,
+    required this.fontSize,
   });
 
   @override
@@ -97,20 +97,20 @@ class FormattedTextModel extends Equatable {
 }
 
 class EntityModel extends Equatable {
-  final String? text;
-  final String? color;
-  final String? url;
-  final String? fontStyle;
-  final String? fontFamily;
-  final int? fontSize;
+  final String text;
+  final String color;
+  final String url;
+  final String fontStyle;
+  final String fontFamily;
+  final int fontSize;
 
   const EntityModel({
-    this.text,
-    this.color,
-    this.url,
-    this.fontStyle,
-    this.fontFamily,
-    this.fontSize,
+    required this.text,
+    required this.color,
+    required this.url,
+    required this.fontStyle,
+    required this.fontFamily,
+    required this.fontSize,
   });
 
   @override
@@ -118,16 +118,16 @@ class EntityModel extends Equatable {
 }
 
 class CardImageModel extends Equatable {
-  final String? imageType;
-  final String? assetType;
-  final String? imageUrl;
-  final double? aspectRatio;
+  final String imageType;
+  final String assetType;
+  final String imageUrl;
+  final double aspectRatio;
 
   const CardImageModel({
-    this.imageType,
-    this.assetType,
-    this.imageUrl,
-    this.aspectRatio,
+    required this.imageType,
+    required this.assetType,
+    required this.imageUrl,
+    required this.aspectRatio,
   });
 
   @override
@@ -135,12 +135,12 @@ class CardImageModel extends Equatable {
 }
 
 class BgGradientModel extends Equatable {
-  final int? angle;
-  final List<String>? colors;
+  final int angle;
+  final List<String> colors;
 
   const BgGradientModel({
-    this.angle,
-    this.colors,
+    required this.angle,
+    required this.colors,
   });
 
   @override
@@ -148,24 +148,24 @@ class BgGradientModel extends Equatable {
 }
 
 class CTAModel extends Equatable {
-  final String? text;
-  final String? type;
-  final String? bgColor;
-  final String? textColor;
-  final bool? isCircular;
-  final bool? isSecondary;
-  final int? strokeWidth;
-  final String? url;
+  final String text;
+  final String type;
+  final String bgColor;
+  final String textColor;
+  final bool isCircular;
+  final bool isSecondary;
+  final int strokeWidth;
+  final String url;
 
   const CTAModel({
-    this.text,
-    this.type,
-    this.bgColor,
-    this.textColor,
-    this.isCircular,
-    this.isSecondary,
-    this.strokeWidth,
-    this.url,
+    required this.text,
+    required this.type,
+    required this.bgColor,
+    required this.textColor,
+    required this.isCircular,
+    required this.isSecondary,
+    required this.strokeWidth,
+    required this.url,
   });
 
   @override

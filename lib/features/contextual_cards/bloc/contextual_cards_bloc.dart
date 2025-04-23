@@ -1,15 +1,14 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fam_assignment/features/contextual_cards/data/models/network_models/network_models.dart';
-import 'package:fam_assignment/features/contextual_cards/repository/contextual_cards_repository_contract.dart';
 import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_event.dart';
 import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_state.dart';
-import 'package:fam_assignment/features/contextual_cards/data/enums/slug_type.dart';
+import 'package:fam_assignment/features/contextual_cards/repository/contextual_cards_repository_contract.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ContextualCardsBloc extends Bloc<ContextualCardsEvent, ContextualCardsState> {
+class ContextualCardsBloc
+    extends Bloc<ContextualCardsEvent, ContextualCardsState> {
   final ContextualCardsRepositoryContract repository;
 
-  ContextualCardsBloc({required this.repository}) : super(ContextualCardsInitial()) {
+  ContextualCardsBloc({required this.repository})
+      : super(ContextualCardsInitial()) {
     on<LoadContextualCards>(_onLoadContextualCards);
     on<FetchContextualCards>(_onFetchContextualCards);
   }
@@ -39,4 +38,4 @@ class ContextualCardsBloc extends Bloc<ContextualCardsEvent, ContextualCardsStat
       emit(ContextualCardsError(message: e.toString()));
     }
   }
-} 
+}
