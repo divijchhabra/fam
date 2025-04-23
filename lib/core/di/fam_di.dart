@@ -1,9 +1,11 @@
 import 'package:fam_assignment/core/network/base_request.dart';
+import 'package:fam_assignment/core/services/preferences_service.dart';
 import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_bloc.dart';
 import 'package:fam_assignment/features/contextual_cards/repository/contextual_cards_repository_contract.dart';
 import 'package:fam_assignment/features/contextual_cards/repository/contextual_cards_repository_impl.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FamDI {
   static final FamDI instance = FamDI._internal();
@@ -17,6 +19,13 @@ class FamDI {
     _getIt.registerLazySingleton<WebService>(
       () => WebService(client: _getIt()),
     );
+    
+    final prefs = await SharedPreferences.getInstance();
+    _getIt.registerSingleton<SharedPreferences>(prefs);
+    
+    _getIt.registerLazySingleton<PreferencesService>(
+      PreferencesService.new,
+    );
 
     // Repository
     _getIt.registerLazySingleton<ContextualCardsRepositoryContract>(
@@ -25,9 +34,12 @@ class FamDI {
 
     // BLoC
     _getIt.registerFactory<ContextualCardsBloc>(
-      () => ContextualCardsBloc(repository: _getIt()),
+      () => ContextualCardsBloc(
+        repository: _getIt(),
+        prefs: _getIt(),
+      ),
     );
   }
 
   T get<T extends Object>() => _getIt.get<T>();
-} 
+}

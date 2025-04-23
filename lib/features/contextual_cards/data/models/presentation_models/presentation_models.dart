@@ -26,6 +26,32 @@ class CardGroupModel extends Equatable {
     required this.level,
   });
 
+  CardGroupModel copyWith({
+    int? id,
+    String? name,
+    DesignType? designType,
+    int? cardType,
+    List<CardModel>? cards,
+    bool? isScrollable,
+    int? height,
+    bool? isFullWidth,
+    String? slug,
+    int? level,
+  }) {
+    return CardGroupModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      designType: designType ?? this.designType,
+      cardType: cardType ?? this.cardType,
+      cards: cards ?? this.cards,
+      isScrollable: isScrollable ?? this.isScrollable,
+      height: height ?? this.height,
+      isFullWidth: isFullWidth ?? this.isFullWidth,
+      slug: slug ?? this.slug,
+      level: level ?? this.level,
+    );
+  }
+
   @override
   List<Object?> get props => [id, name, designType, cardType, cards, isScrollable, height, isFullWidth, slug, level];
 }

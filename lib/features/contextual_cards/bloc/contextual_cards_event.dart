@@ -25,3 +25,25 @@ class FetchContextualCards extends ContextualCardsEvent {
   @override
   List<Object> get props => [slugType];
 }
+
+class DismissHC3Card extends ContextualCardsEvent {
+  final int cardId;
+  
+  const DismissHC3Card({required this.cardId});
+
+  @override
+  List<Object> get props => [cardId];
+}
+
+class SetReminderHC3Card extends ContextualCardsEvent {
+  final int cardId;
+  final bool hasReminder;
+  
+  const SetReminderHC3Card({
+    required this.cardId,
+    required this.hasReminder,
+  });
+
+  @override
+  List<Object> get props => [cardId, hasReminder];
+}

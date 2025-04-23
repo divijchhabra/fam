@@ -1,10 +1,13 @@
-import 'package:fam_assignment/core/services/preferences_service.dart';
 import 'package:fam_assignment/core/utils/assets.dart';
 import 'package:fam_assignment/core/utils/url_launcher.dart';
 import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
 import 'package:fam_assignment/features/contextual_cards/presentation/widgets/common/cta_button.dart';
 import 'package:fam_assignment/features/contextual_cards/presentation/widgets/common/formatted_text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_event.dart';
 
 class HC3Card extends StatefulWidget {
   final CardGroupModel cardGroup;
@@ -20,66 +23,15 @@ class HC3Card extends StatefulWidget {
 
 class _HC3CardState extends State<HC3Card> {
   bool isSelected = false;
-  bool _isReminded = false;
-  bool _isDismissed = false;
-  final _preferencesService = PreferencesService();
-
-  @override
-  void initState() {
-    super.initState();
-    _loadCardStatus();
-  }
-
-  Future<void> _loadCardStatus() async {
-    final cardId = widget.cardGroup.cards.first.id.toString();
-    final reminderStatus = await _preferencesService.getReminderStatus(cardId);
-    final dismissStatus = await _preferencesService.getDismissStatus(cardId);
-    if (mounted) {
-      setState(() {
-        _isReminded = reminderStatus ?? false;
-        _isDismissed = dismissStatus ?? false;
-      });
-    }
-  }
-
-  Future<void> _toggleReminder() async {
-    final cardId = widget.cardGroup.cards.first.id.toString();
-    const newStatus = true;
-    final success = await _preferencesService.setReminderStatus(
-      cardId,
-      newStatus,
-    );
-
-    if (success && mounted) {
-      setState(() {
-        _isReminded = newStatus;
-        isSelected = false;
-      });
-    }
-  }
-
-  Future<void> _handleDismiss() async {
-    final cardId = widget.cardGroup.cards.first.id.toString();
-    final success = await _preferencesService.setDismissStatus(
-      cardId,
-      true,
-    );
-
-    if (success && mounted) {
-      setState(() {
-        _isDismissed = true;
-        isSelected = false;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.cardGroup.cards.isEmpty || _isDismissed || _isReminded) {
+    if (widget.cardGroup.cards.isEmpty) {
       return const SizedBox.shrink();
     }
 
     final card = widget.cardGroup.cards.first;
+    final bloc = BlocProvider.of<ContextualCardsBloc>(context);
     final double space = (MediaQuery.sizeOf(context).width - 80) / 2;
 
     return SizedBox(
@@ -150,13 +102,19 @@ class _HC3CardState extends State<HC3Card> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildActionButton(
-                    onTap: _toggleReminder,
+                    onTap: () {
+                      bloc.add(SetReminderHC3Card(cardId: card.id, hasReminder: true));
+                      setState(() => isSelected = false);
+                    },
                     icon: AppImages.bell,
                     label: 'remind later',
                   ),
                   const SizedBox(height: 8),
                   _buildActionButton(
-                    onTap: _handleDismiss,
+                    onTap: () {
+                      bloc.add(DismissHC3Card(cardId: card.id));
+                      setState(() => isSelected = false);
+                    },
                     icon: AppImages.dismiss,
                     label: 'dismiss now',
                   ),

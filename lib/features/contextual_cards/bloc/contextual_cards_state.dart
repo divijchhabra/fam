@@ -5,7 +5,7 @@ abstract class ContextualCardsState extends Equatable {
   const ContextualCardsState();
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 class ContextualCardsInitial extends ContextualCardsState {}
@@ -18,7 +18,15 @@ class ContextualCardsLoaded extends ContextualCardsState {
   const ContextualCardsLoaded({required this.cards});
 
   @override
-  List<Object?> get props => [cards];
+  List<Object> get props => [cards];
+
+  ContextualCardsLoaded copyWith({
+    List<CardGroupModel>? cards,
+  }) {
+    return ContextualCardsLoaded(
+      cards: cards ?? this.cards,
+    );
+  }
 }
 
 class ContextualCardsError extends ContextualCardsState {
@@ -27,5 +35,5 @@ class ContextualCardsError extends ContextualCardsState {
   const ContextualCardsError({required this.message});
 
   @override
-  List<Object?> get props => [message];
+  List<Object> get props => [message];
 } 

@@ -33,7 +33,7 @@ class ContextualCardsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => FamDI.instance.get<ContextualCardsBloc>()
-        ..add(LoadContextualCards(slugType: slugType)),
+        ..add(FetchContextualCards(slugType: slugType)),
       child: Scaffold(
         body: BlocBuilder<ContextualCardsBloc, ContextualCardsState>(
           builder: (context, state) {
@@ -71,7 +71,7 @@ class ContextualCardsPage extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         BlocProvider.of<ContextualCardsBloc>(context)
-                            .add(LoadContextualCards(slugType: slugType));
+                            .add(FetchContextualCards(slugType: slugType));
                       },
                       child: const Text('Retry'),
                     ),
