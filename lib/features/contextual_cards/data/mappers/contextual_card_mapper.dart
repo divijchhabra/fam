@@ -1,6 +1,6 @@
 import 'package:fam_assignment/features/contextual_cards/data/enums/design_type.dart';
-import 'package:fam_assignment/features/contextual_cards/data/models/network_models/network_models.dart';
-import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
+import 'package:fam_assignment/features/contextual_cards/data/models/network_models/contextual_cards_network_model.dart';
+import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/contextual_card_presentation_model.dart';
 
 extension ContextualCardResponseMapper on ContextualCardResponseNetworkModel {
   List<CardGroupModel> toPresentation() {

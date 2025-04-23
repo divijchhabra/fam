@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
+import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/contextual_card_presentation_model.dart';
 import 'package:fam_assignment/features/contextual_cards/data/enums/design_type.dart';
 import '../cards/hc1_card.dart';
 import '../cards/hc3_card.dart';

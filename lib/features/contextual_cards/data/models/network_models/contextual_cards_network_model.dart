@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'network_models.g.dart';
+part 'contextual_cards_network_model.g.dart';
 
 @JsonSerializable()
 class ContextualCardResponseNetworkModel extends Equatable {

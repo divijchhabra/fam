@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'contextual_card_response.dart';
+part of 'contextual_cards_network_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -122,6 +122,10 @@ FormattedTextNetworkModel _$FormattedTextNetworkModelFromJson(
       entities: (json['entities'] as List<dynamic>)
           .map((e) => EntityNetworkModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      color: json['color'] as String?,
+      fontStyle: json['font_style'] as String?,
+      fontFamily: json['font_family'] as String?,
+      fontSize: (json['font_size'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$FormattedTextNetworkModelToJson(
@@ -130,6 +134,10 @@ Map<String, dynamic> _$FormattedTextNetworkModelToJson(
       'text': instance.text,
       'align': instance.align,
       'entities': instance.entities,
+      'color': instance.color,
+      'font_style': instance.fontStyle,
+      'font_family': instance.fontFamily,
+      'font_size': instance.fontSize,
     };
 
 EntityNetworkModel _$EntityNetworkModelFromJson(Map<String, dynamic> json) =>

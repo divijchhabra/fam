@@ -1,10 +1,14 @@
-import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_event.dart';
-import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_state.dart';
+import 'package:equatable/equatable.dart';
 import 'package:fam_assignment/features/contextual_cards/data/enums/design_type.dart';
-import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
+import 'package:fam_assignment/features/contextual_cards/data/enums/slug_type.dart';
+import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/contextual_card_presentation_model.dart';
 import 'package:fam_assignment/features/contextual_cards/repository/contextual_cards_repository_contract.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+part 'contextual_cards_event.dart';
+
+part 'contextual_cards_state.dart';
 
 class ContextualCardsBloc
     extends Bloc<ContextualCardsEvent, ContextualCardsState> {
@@ -19,7 +23,6 @@ class ContextualCardsBloc
     on<DismissHC3Card>(_onDismissCard);
     on<SetReminderHC3Card>(_onSetReminderCard);
   }
-
 
   Future<void> _onFetchContextualCards(
     FetchContextualCards event,

@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:fam_assignment/features/contextual_cards/data/enums/slug_type.dart';
+part of 'contextual_cards_bloc.dart';
 
 abstract class ContextualCardsEvent extends Equatable {
   const ContextualCardsEvent();

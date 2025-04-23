@@ -1,13 +1,11 @@
 import 'package:fam_assignment/core/utils/assets.dart';
 import 'package:fam_assignment/core/utils/url_launcher.dart';
-import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
+import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_bloc.dart';
+import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/contextual_card_presentation_model.dart';
 import 'package:fam_assignment/features/contextual_cards/presentation/widgets/common/cta_button.dart';
 import 'package:fam_assignment/features/contextual_cards/presentation/widgets/common/formatted_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_event.dart';
 
 class HC3Card extends StatefulWidget {
   final CardGroupModel cardGroup;

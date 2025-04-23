@@ -1,5 +1,5 @@
 import 'package:fam_assignment/core/utils/url_launcher.dart';
-import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
+import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/contextual_card_presentation_model.dart';
 import 'package:flutter/material.dart';
 
 class HC9Card extends StatelessWidget {

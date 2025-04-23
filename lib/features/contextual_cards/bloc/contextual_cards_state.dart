@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:fam_assignment/features/contextual_cards/data/models/presentation_models/presentation_models.dart';
+part of 'contextual_cards_bloc.dart';
 
 abstract class ContextualCardsState extends Equatable {
   const ContextualCardsState();

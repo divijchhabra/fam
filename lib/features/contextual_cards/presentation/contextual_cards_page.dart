@@ -1,7 +1,5 @@
 import 'package:fam_assignment/core/di/fam_di.dart';
 import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_bloc.dart';
-import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_event.dart';
-import 'package:fam_assignment/features/contextual_cards/bloc/contextual_cards_state.dart';
 import 'package:fam_assignment/features/contextual_cards/data/enums/slug_type.dart';
 import 'package:fam_assignment/features/contextual_cards/presentation/widgets/card_groups/card_group_widget.dart';
 import 'package:flutter/material.dart';
